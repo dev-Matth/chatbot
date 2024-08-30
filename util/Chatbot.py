@@ -2,44 +2,66 @@ from openai import OpenAI
 import os
 import time
 from dotenv import load_dotenv
+import boto3
+from botocore.exceptions import ClientError
 
-print("Carregando variáveis de ambiente...")
+def get_secret():
 
-time.sleep(2)
+    secret_name = "OPENAI_API_KEY"
+    region_name = "us-east-2"
 
-caminho_arquivo_env = os.path.join('config', '.env')
-load_dotenv(dotenv_path=caminho_arquivo_env)
-chave_api = os.getenv('CHATBOT_API_KEY')
-client = OpenAI(api_key=chave_api)
-
-print("Variáveis de ambiente carregadas com sucesso!")
-
-time.sleep(2)
-
-print("Bem-vindo ao ChatGPT (Coded by Matth)! Digite 'sair' para encerrar a conversa.")
-
-def enviar_mensagem(mensagem, Lista_mensagens=[]):
-    Lista_mensagens.append(
-        {"role": "user", "content": mensagem}
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
     )
 
-    response = client.chat.completions.create(
-        model = "gpt-3.5-turbo",
-        messages = Lista_mensagens,
-    )
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        # For a list of exceptions thrown, see
+        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        raise e
 
-    return response.choices[0].message
+    secret = get_secret_value_response['SecretString']
 
-lista_mensagens = []
+    print("Carregando variáveis de ambiente...")
 
-while True:
-    texto = input("Você: ")
+    time.sleep(2)
 
-    if texto.lower() == "sair":
-        print("Encerrando a conversa...")
-        time.sleep(1)
-        break
-    else:
-        resposta = enviar_mensagem(texto, lista_mensagens)
-        lista_mensagens.append(resposta)
-        print("ChatGPT: " + resposta["content"])
+    client = OpenAI(api_key=secret)
+
+    print("Variáveis de ambiente carregadas com sucesso!")
+
+    time.sleep(2)
+
+    print("Bem-vindo ao ChatGPT (Coded by Matth)! Digite 'sair' para encerrar a conversa.")
+
+    def enviar_mensagem(mensagem, Lista_mensagens=[]):
+        Lista_mensagens.append(
+            {"role": "user", "content": mensagem}
+        )
+
+        response = client.chat.completions.create(
+            model = "gpt-3.5-turbo",
+            messages = Lista_mensagens,
+        )
+
+        return response.choices[0].message
+
+    lista_mensagens = []
+
+    while True:
+        texto = input("Você: ")
+
+        if texto.lower() == "sair":
+            print("Encerrando a conversa...")
+            time.sleep(1)
+            break
+        else:
+            resposta = enviar_mensagem(texto, lista_mensagens)
+            lista_mensagens.append(resposta)
+            print("ChatGPT: " + resposta["content"])
