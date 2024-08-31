@@ -1,10 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio Criativo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1a1a2e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img.logo {
+            width: 100px;
+            height: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #16213e;
+        }
+
+        main {
+            padding: 20px;
+            flex: 1;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        footer.fixed-footer {
+            background-color: #1a1a2e; /* Mesma cor do header */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer.extra-footer {
+            background-color: #333; /* Cinza escuro */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+        }
+
+        header .menu-icon {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .content {
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 160px); /* Ajusta conforme a altura do header e footer */
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        .link {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilos do menu lateral */
+        .side-menu {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .side-menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 22px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            background-color: #575757;
+        }
+
+        .side-menu .close-btn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* Fundo escurecido */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 500;
+            display: none;
+        }
+
+        /* Quando o menu está aberto */
+        body.menu-open .overlay {
+            display: block;
+        }
+
+        body.menu-open {
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+        }
+
+        /* Ajustes responsivos */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 0.9em;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            header .menu-icon {
+                font-size: 20px;
+            }  
+        }
+    </style>
 </head>
 <body>
-    <p>Hello, World!</p>
+
+<header>
+    <img src="../logo.png" alt="Logo" class="logo">
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+</header>
+
+<!-- Menu lateral -->
+<div id="sideMenu" class="side-menu">
+    <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">×</a>
+    <a href="http://127.0.0.1:5000">Home</a>
+    <a href="http://127.0.0.1:5000/chat">Chat</a>
+    <a href="#">Portfólio</a>
+    <a href="http://127.0.0.1:5000/contatos">Contato</a>
+</div>
+
+<!-- Fundo escurecido -->
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div class="content">
+    <img src="profile.jpg" alt="Imagem de Perfil" class="profile-image">
+    <h1>PORTFÓLIO CRIATIVO</h1>
+    <p>
+        Duis aute irure dolor em reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <p>Imagens de <a href="https://www.freepik.com" class="link">Freepik</a></p>
+    <p><a href="#" class="link">CONSULTE MAIS INFORMAÇÃO</a></p>
+</div>
+
+<!-- Footer fixo -->
+<footer class="fixed-footer">
+    © 2024 - Meu Portfólio Criativo
+</footer>
+
+<!-- Footer extra que aparece após rolar a página -->
+<footer class="extra-footer">
+    Informações adicionais, detalhes de contato, etc.
+</footer>
+
+<script>
+    function openMenu() {
+        document.getElementById("sideMenu").style.width = "250px";
+        document.body.classList.add("menu-open");
+    }
+
+    function closeMenu() {
+        document.getElementById("sideMenu").style.width = "0";
+        document.body.classList.remove("menu-open");
+    }
+
+    // Fecha o menu ao clicar fora dele
+    document.getElementById("overlay").addEventListener("click", closeMenu);
+</script>
+
 </body>
 </html>
